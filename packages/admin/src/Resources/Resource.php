@@ -3,6 +3,7 @@
 namespace Filament\Resources;
 
 use Closure;
+use Filament\Contracts\FilamentableContract;
 use Filament\Facades\Filament;
 use Filament\GlobalSearch\GlobalSearchResult;
 use function Filament\locale_has_pluralization;
@@ -95,14 +96,14 @@ class Resource
         return $table;
     }
 
-    public static function resolveRecordRouteBinding($key): ?Model
+    public static function resolveRecordRouteBinding($key): ?FilamentableContract
     {
         return app(static::getModel())
             ->resolveRouteBindingQuery(static::getEloquentQuery(), $key, static::getRecordRouteKeyName())
             ->first();
     }
 
-    public static function can(string $action, ?Model $record = null): bool
+    public static function can(string $action, ?FilamentableContract $record = null): bool
     {
         $policy = Gate::getPolicyFor($model = static::getModel());
 
@@ -123,12 +124,12 @@ class Resource
         return static::can('create');
     }
 
-    public static function canEdit(Model $record): bool
+    public static function canEdit(FilamentableContract $record): bool
     {
         return static::can('update', $record);
     }
 
-    public static function canDelete(Model $record): bool
+    public static function canDelete(FilamentableContract $record): bool
     {
         return static::can('delete', $record);
     }
@@ -138,7 +139,7 @@ class Resource
         return static::can('deleteAny');
     }
 
-    public static function canForceDelete(Model $record): bool
+    public static function canForceDelete(FilamentableContract $record): bool
     {
         return static::can('forceDelete', $record);
     }
@@ -153,12 +154,12 @@ class Resource
         return static::can('reorder');
     }
 
-    public static function canReplicate(Model $record): bool
+    public static function canReplicate(FilamentableContract $record): bool
     {
         return static::can('replicate', $record);
     }
 
-    public static function canRestore(Model $record): bool
+    public static function canRestore(FilamentableContract $record): bool
     {
         return static::can('restore', $record);
     }
@@ -173,7 +174,7 @@ class Resource
         return static::$isGloballySearchable && count(static::getGloballySearchableAttributes()) && static::canViewAny();
     }
 
-    public static function canView(Model $record): bool
+    public static function canView(FilamentableContract $record): bool
     {
         return static::can('view', $record);
     }
@@ -199,17 +200,17 @@ class Resource
         return [$titleAttribute];
     }
 
-    public static function getGlobalSearchResultDetails(Model $record): array
+    public static function getGlobalSearchResultDetails(FilamentableContract $record): array
     {
         return [];
     }
 
-    public static function getGlobalSearchResultTitle(Model $record): string
+    public static function getGlobalSearchResultTitle(FilamentableContract $record): string
     {
         return static::getRecordTitle($record);
     }
 
-    public static function getGlobalSearchResultUrl(Model $record): ?string
+    public static function getGlobalSearchResultUrl(FilamentableContract $record): ?string
     {
         if (static::hasPage('edit') && static::canEdit($record)) {
             return static::getUrl('edit', ['record' => $record]);
@@ -306,7 +307,7 @@ class Resource
         return static::$recordTitleAttribute;
     }
 
-    public static function getRecordTitle(?Model $record): ?string
+    public static function getRecordTitle(?FilamentableContract $record): ?string
     {
         return $record?->getAttribute(static::getRecordTitleAttribute()) ?? static::getModelLabel();
     }

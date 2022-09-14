@@ -12,6 +12,7 @@ trait InteractsWithRecord
 
     protected function resolveRecord($key): Model
     {
+        dd($key);
         $record = static::getResource()::resolveRecordRouteBinding($key);
 
         if ($record === null) {

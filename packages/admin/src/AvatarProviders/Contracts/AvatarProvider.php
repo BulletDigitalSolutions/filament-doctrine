@@ -2,9 +2,9 @@
 
 namespace Filament\AvatarProviders\Contracts;
 
-use Illuminate\Database\Eloquent\Model;
+use Filament\Contracts\FilamentableContract;
 
 interface AvatarProvider
 {
-    public function get(Model $user): string;
+    public function get(FilamentableContract $user): string;
 }

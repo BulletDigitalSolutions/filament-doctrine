@@ -4,7 +4,7 @@ namespace {{ namespace }};
 
 use App\Filament\Resources\{{ resource }}\Pages;
 use App\Filament\Resources\{{ resource }}\RelationManagers;
-use App\Models\{{ model }};
+use App\Entities\{{ model }};
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;

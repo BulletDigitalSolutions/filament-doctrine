@@ -6,7 +6,7 @@ use Filament\Forms\ComponentContainer;
 use Filament\Notifications\Notification;
 use Filament\Pages\Actions\Action;
 use Filament\Pages\Contracts\HasFormActions;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
@@ -68,7 +68,7 @@ class CreateRecord extends Page implements HasFormActions
 
         $this->record = $this->handleRecordCreation($data);
 
-        $this->form->model($this->record)->saveRelationships();
+        $this->form->model(Arr::get($this->record, 'id'))->saveRelationships();
 
         $this->callHook('afterCreate');
 
@@ -102,9 +102,9 @@ class CreateRecord extends Page implements HasFormActions
         $this->create(another: true);
     }
 
-    protected function handleRecordCreation(array $data): Model
+    protected function handleRecordCreation(array $data)
     {
-        return $this->getModel()::create($data);
+        return $this->getModel()::create($data)->__toArray();
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array
@@ -182,14 +182,15 @@ class CreateRecord extends Page implements HasFormActions
     protected function getRedirectUrl(): string
     {
         $resource = static::getResource();
+//          TODO
 
-        if ($resource::hasPage('view') && $resource::canView($this->record)) {
-            return $resource::getUrl('view', ['record' => $this->record]);
-        }
-
-        if ($resource::hasPage('edit') && $resource::canEdit($this->record)) {
-            return $resource::getUrl('edit', ['record' => $this->record]);
-        }
+//        if ($resource::hasPage('view') && $resource::canView($this->record)) {
+//            return $resource::getUrl('view', ['record' => $this->record]);
+//        }
+//
+//        if ($resource::hasPage('edit') && $resource::canEdit($this->record)) {
+//            return $resource::getUrl('edit', ['record' => $this->record]);
+//        }
 
         return $resource::getUrl('index');
     }
